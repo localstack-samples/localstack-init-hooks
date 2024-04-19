@@ -1,0 +1,15 @@
+services:
+  localstack:
+    container_name: localstack-main
+    image: localstack/localstack-pro
+    ports:
+      - "127.0.0.1:443:443"
+      - "127.0.0.1:4566:4566"
+    environment:
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN}
+      - MY_SECRET_TOKEN_VALUE="hello-there" # used to populate a value in 01-init-secrets.sh
+    volumes:
+      - "./on-ready-hooks/:/etc/localstack/init/ready.d/"  # ready hook
+      - "./on-shutdown-hooks:/etc/localstack/init/shutdown.d/"  # shutdown hook
+      - "./volume:/var/lib/localstack"  # localstack volume
+      - "/var/run/docker.sock:/var/run/docker.sock"
