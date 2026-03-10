@@ -11,6 +11,7 @@ You can overwrite variables in the script by passing environment variables to th
 Start localstack by mounting the script into the `ready.d` init hook folder.
 
 ```console
+export LOCALSTACK_AUTH_TOKEN=<your-auth-token> 
 localstack start -v ./init-vpc.sh:/etc/localstack/init/ready.d/init-vpc.sh
 ```
 
