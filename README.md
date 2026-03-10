@@ -15,12 +15,3 @@ This sample shows how to use init hooks when using
 - [Docker Compose](https://docs.docker.com/compose/install/).
 - [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
 
-## Start LocalStack
-
-Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
-
-```bash
-export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
-make start
-make ready
-```
