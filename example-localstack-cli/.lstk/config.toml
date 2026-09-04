@@ -1,0 +1,5 @@
+[[containers]]
+type = "aws"
+tag  = "latest"
+port = "4566"
+volumes = ["../init-vpc.sh:/etc/localstack/init/ready.d/init-vpc.sh"]

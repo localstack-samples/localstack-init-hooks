@@ -12,16 +12,16 @@ function create-subnet() {
     vpc_id=$1
     cidr=$2
 
-    subnet=$(awslocal ec2 create-subnet --query 'Subnet.SubnetId' --output text --cidr-block ${cidr} --vpc-id ${vpc_id})
-    awslocal ec2 create-tags --tags Key=aws-cdk:subnet-name,Value=private --resources ${subnet}
-    awslocal ec2 create-tags --tags Key=aws-cdk:subnet-type,Value=Isolated --resources ${subnet}
+    subnet=$(aws --endpoint-url=http://localhost:4566 ec2 create-subnet --query 'Subnet.SubnetId' --output text --cidr-block ${cidr} --vpc-id ${vpc_id})
+    aws --endpoint-url=http://localhost:4566 ec2 create-tags --tags Key=aws-cdk:subnet-name,Value=private --resources ${subnet}
+    aws --endpoint-url=http://localhost:4566 ec2 create-tags --tags Key=aws-cdk:subnet-type,Value=Isolated --resources ${subnet}
     echo ${subnet}
 }
 
 # create VPC
-vpc_id=$(awslocal ec2 create-vpc --cidr-block ${vpc_cidr} --query Vpc.VpcId --output text)
+vpc_id=$(aws --endpoint-url=http://localhost:4566 ec2 create-vpc --cidr-block ${vpc_cidr} --query Vpc.VpcId --output text)
 echo ${vpc_id}
-awslocal ec2 create-tags --tags Key=Name,Value=${vpc_name} --resources ${vpc_id}
+aws --endpoint-url=http://localhost:4566 ec2 create-tags --tags Key=Name,Value=${vpc_name} --resources ${vpc_id}
 
 # create subnets
 create-subnet "${vpc_id}" "${subnet_1_cidr}"
