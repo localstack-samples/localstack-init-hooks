@@ -6,12 +6,12 @@ For instance, you could run a set of AWS commands after localstack has become re
 
 This sample shows how to use init hooks when using
 * `docker compose` (`example-docker-compose/`)
-* `localstack` cli (`example-localstack-cli/`)
+* `lstk` (`example-localstack-cli/`)
 
 ## Prerequisites
 
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
-- [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
+- [`lstk`](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/). Install it with `npm install -g @localstack/lstk`, or `brew install localstack/tap/lstk`.
 - [Docker Compose](https://docs.docker.com/compose/install/).
-- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/) with the [`awslocal` wrapper](https://docs.localstack.cloud/user-guide/integrations/aws-cli/#localstack-aws-cli-awslocal).
+- [AWS CLI](https://docs.localstack.cloud/user-guide/integrations/aws-cli/), required by `lstk aws`.
 

@@ -40,7 +40,7 @@ LOCALSTACK_AUTH_TOKEN=ls-... docker compose up
 ### Secretsmanager secrets (Shell script)
 
 ```console
- % awslocal secretsmanager get-secret-value --secret-id my-platform-secret
+ % lstk aws secretsmanager get-secret-value --secret-id my-platform-secret
 {
     "ARN": "arn:aws:secretsmanager:us-east-1:000000000000:secret:my-platform-secret-BlLPzn",
     "Name": "my-platform-secret",
@@ -57,7 +57,7 @@ LOCALSTACK_AUTH_TOKEN=ls-... docker compose up
 ### SSM Parameters (Python script)
 
 ```console
-awslocal ssm describe-parameters
+lstk aws ssm describe-parameters
 {
     "Parameters": [
         {
@@ -81,7 +81,7 @@ awslocal ssm describe-parameters
 ```
 
 ```console
-awslocal ssm get-parameter --name "/my/param-1"
+lstk aws ssm get-parameter --name "/my/param-1"
 {
     "Parameter": {
         "Name": "/my/param-1",
