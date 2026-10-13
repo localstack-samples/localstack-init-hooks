@@ -6,7 +6,7 @@ This example has two scripts that are executed as soon as localstack is ready:
 * a python script that creates parameters based on a list of values defined in the script
 
 And one script that runs when localstack shuts down:
-* a shell script that saves the state into `./volume/my-pod.zip` before localstack shuts down
+* a shell script that exports the state into `./volume/my-pod.zip` before localstack shuts down
 
 ## Start LocalStack
 
@@ -98,5 +98,9 @@ lstk aws ssm get-parameter --name "/my/param-1"
 
 ## Shutdown
 
-After you've shut down localstack, you should see a zipfile `my-pod.zip` in `./volume`, which is created by the shutdown hook.
-This is a state export that you can import into a fresh localstack instance with `localstack state import <...>`.
+After you've shut down localstack, you should see a zipfile `my-pod.zip` in `./volume`, which is created by the shutdown hook through the `/_localstack/pods/state` endpoint.
+This is a state export that you can load into a fresh localstack instance with `lstk load ./volume/my-pod.zip`.
+
+## Test
+
+With LocalStack running, `./test.sh` checks that both ready hooks succeeded and created the secret and parameters.

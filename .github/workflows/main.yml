@@ -1,0 +1,102 @@
+name: Test init hooks
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  lstk:
+    name: Init hooks with lstk
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: example-localstack-cli
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install lstk
+        run: |
+          npm install -g @localstack/lstk
+          lstk setup aws --force --non-interactive
+
+      - name: Start LocalStack with the mounted init hook
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        run: lstk start
+
+      - name: Run tests
+        run: ./test.sh
+
+      - name: Show LocalStack logs
+        if: failure()
+        run: lstk logs | tail -200
+
+  docker-compose:
+    name: Init hooks with docker compose
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: example-docker-compose
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install lstk
+        run: |
+          npm install -g @localstack/lstk
+          lstk setup aws --force --non-interactive
+
+      - name: Start LocalStack
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        run: |
+          docker compose up -d
+          for i in $(seq 1 60); do
+            curl -sf localhost:4566/_localstack/health > /dev/null && exit 0
+            sleep 2
+          done
+          docker compose logs
+          exit 1
+
+      - name: Run tests
+        run: ./test.sh
+
+      - name: Stop LocalStack and check the shutdown hook exported the state
+        run: |
+          docker compose down --timeout 60
+          ls -l volume/my-pod.zip
+          unzip -l volume/my-pod.zip | grep secretsmanager
+
+      - name: Load the exported state into a fresh LocalStack
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        run: |
+          lstk start
+          lstk load ./volume/my-pod.zip
+          lstk aws secretsmanager get-secret-value --secret-id my-platform-secret --query SecretString --output text | grep hello-there
+
+      - name: Show LocalStack logs
+        if: failure()
+        run: |
+          docker compose logs --tail 200 || true
+          lstk logs | tail -200 || true
