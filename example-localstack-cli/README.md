@@ -45,3 +45,7 @@ You can check that the stage was executed successfully:
   ]
 }
 ```
+
+## Test
+
+With LocalStack running, `./test.sh` checks that `init-vpc.sh` succeeded and created the VPC with three isolated subnets.
