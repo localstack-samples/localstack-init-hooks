@@ -1,4 +1,10 @@
 #!/bin/bash
+set -eo pipefail
+
+# Init hooks do not inherit AWS settings, so default to the LocalStack test credentials
+export AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-us-east-1}
+export AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-test}
+export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-test}
 
 # variables that can be overwritten via environment variables
 vpc_name=${VPC_NAME-"MyVPC"}

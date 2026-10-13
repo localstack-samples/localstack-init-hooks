@@ -3,6 +3,8 @@ import boto3
 
 os.environ["AWS_ENDPOINT_URL"] = "http://localhost:4566"
 os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
+os.environ.setdefault("AWS_ACCESS_KEY_ID", "test")
+os.environ.setdefault("AWS_SECRET_ACCESS_KEY", "test")
 
 ssm = boto3.client("ssm")
 
